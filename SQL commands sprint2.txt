@@ -1,0 +1,711 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Fri Apr 24 11:16:29 2020
+
+Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+
+SQL> conn sprint2/sprint123;
+ERROR:
+ORA-01045: user SPRINT2 lacks CREATE SESSION privilege; logon denied
+
+
+SQL> conn /as sysdba;
+Connected.
+SQL> create user sprint2 identified by sprint123;
+create user sprint2 identified by sprint123
+            *
+ERROR at line 1:
+ORA-01920: user name 'SPRINT2' conflicts with another user or role name
+
+
+SQL> create user sprint2 identified by sprint;
+create user sprint2 identified by sprint
+            *
+ERROR at line 1:
+ORA-01920: user name 'SPRINT2' conflicts with another user or role name
+
+
+SQL> create user cap identified by cap123;
+
+User created.
+
+SQL> grant connect,resource to sprint2;
+
+Grant succeeded.
+
+SQL> conn sprint2/sprint123;
+Connected.
+SQL> create table account(username varchar2(10),password varchar2(10));
+
+Table created.
+
+SQL> desc account;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ USERNAME                                           VARCHAR2(10)
+ PASSWORD                                           VARCHAR2(10)
+
+SQL> insert into account values('manasa','manasa123');
+
+1 row created.
+
+SQL> desc account;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ USERNAME                                           VARCHAR2(10)
+ PASSWORD                                           VARCHAR2(10)
+
+SQL> insert into account values('bhavana','bhavana123');
+
+1 row created.
+
+SQL> insert into account values('ramani','ramani123');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from account;
+
+USERNAME   PASSWORD
+---------- ----------
+manasa     manasa123
+bhavana    bhavana123
+ramani     ramani123
+
+SQL> alter table account add sno number(5);
+
+Table altered.
+
+SQL> desc account;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ USERNAME                                           VARCHAR2(10)
+ PASSWORD                                           VARCHAR2(10)
+ SNO                                                NUMBER(5)
+
+SQL> update account set sno='1' where username='manasa';
+
+1 row updated.
+
+SQL> select * from account;
+
+USERNAME   PASSWORD          SNO
+---------- ---------- ----------
+manasa     manasa123           1
+bhavana    bhavana123
+ramani     ramani123
+
+SQL> update account set sno='2' where username='bhavana';
+
+1 row updated.
+
+SQL> update account set sno='3' where username='ramani';
+
+1 row updated.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from account;
+
+USERNAME   PASSWORD          SNO
+---------- ---------- ----------
+manasa     manasa123           1
+bhavana    bhavana123          2
+ramani     ramani123           3
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table city(sno number(5),cityid number(5),citynames varchar2(10));
+
+Table created.
+
+SQL> desc city;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                                NUMBER(5)
+ CITYID                                             NUMBER(5)
+ CITYNAMES                                          VARCHAR2(10)
+
+SQL> insert into city values('1','100','Hyderabad');
+
+1 row created.
+
+SQL> insert into city values('2','200','BanjaraHills');
+insert into city values('2','200','BanjaraHills')
+                                  *
+ERROR at line 1:
+ORA-12899: value too large for column "SPRINT2"."CITY"."CITYNAMES" (actual: 12,
+maximum: 10)
+
+
+SQL> insert into city values('2','200','Kukatpally');
+
+1 row created.
+
+SQL> insert into city values('3','300','Hitechcity');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from city;
+
+       SNO     CITYID CITYNAMES
+---------- ---------- ----------
+         1        100 Hyderabad
+         2        200 Kukatpally
+         3        300 Hitechcity
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table hello(id number(10),name varchar2(10));
+
+Table created.
+
+SQL> desc hello;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                                 NUMBER(10)
+ NAME                                               VARCHAR2(10)
+
+SQL> insert into hello('','manasa');
+insert into hello('','manasa')
+                  *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> insert into hello('100','manasa');
+insert into hello('100','manasa')
+                  *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> insert into hello values('','manasa');
+
+1 row created.
+
+SQL> desc hello;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                                 NUMBER(10)
+ NAME                                               VARCHAR2(10)
+
+SQL> select * from hello;
+
+        ID NAME
+---------- ----------
+           manasa
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table languages(sno number(5),language varchar2(10));
+
+Table created.
+
+SQL> insert into languages values('1','telugu');
+
+1 row created.
+
+SQL> insert into languages values('2','hindi');
+
+1 row created.
+
+SQL> insert into languages values('3','english');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> slect * from languages;
+SP2-0734: unknown command beginning "slect * fr..." - rest of line ignored.
+SQL> select * from languages;
+
+       SNO LANGUAGE
+---------- ----------
+         1 telugu
+         2 hindi
+         3 english
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table movies(movie_id number(10),theatres varchar2(10),movies varchar2(10));
+
+Table created.
+
+SQL> desc movies;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MOVIE_ID                                           NUMBER(10)
+ THEATRES                                           VARCHAR2(10)
+ MOVIES                                             VARCHAR2(10)
+
+SQL> insert into movies values('100','Imax','KGF');
+
+1 row created.
+
+SQL> insert into movies values('200','Asian','Bahubali');
+
+1 row created.
+
+SQL> insert into movies values('300','BVK','Robo 2.o');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from movies;
+
+  MOVIE_ID THEATRES   MOVIES
+---------- ---------- ----------
+       100 Imax       KGF
+       200 Asian      Bahubali
+       300 BVK        Robo 2.o
+
+SQL> create table payments(booking_id number(5),account_no number(4),money_collected number(5),seats_booked number(3),seat_type varchar2(6),refund number(5),date_of_transac varchar2(10));
+
+Table created.
+
+SQL> desc payments;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOKING_ID                                         NUMBER(5)
+ ACCOUNT_NO                                         NUMBER(4)
+ MONEY_COLLECTED                                    NUMBER(5)
+ SEATS_BOOKED                                       NUMBER(3)
+ SEAT_TYPE                                          VARCHAR2(6)
+ REFUND                                             NUMBER(5)
+ DATE_OF_TRANSAC                                    VARCHAR2(10)
+
+SQL> insert into table values('100','1000','600','3','GOLD','0','20-04-2020');
+insert into table values('100','1000','600','3','GOLD','0','20-04-2020')
+            *
+ERROR at line 1:
+ORA-00903: invalid table name
+
+
+SQL> insert into payments values('100','1000','600','3','GOLD','0','20-04-2020');
+
+1 row created.
+
+SQL> select * from payments;
+
+BOOKING_ID ACCOUNT_NO MONEY_COLLECTED SEATS_BOOKED SEAT_T     REFUND DATE_OF_TR
+---------- ---------- --------------- ------------ ------ ---------- ----------
+       100       1000             600            3 GOLD            0 20-04-2020
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table refund(sno number(5),account_no number(4),money_refunded number(5),booking_id number(10);date_of_refund varchar2(10));
+create table refund(sno number(5),account_no number(4),money_refunded number(5),booking_id number(10);date_of_refund varchar2(10))
+                                                                                                     *
+ERROR at line 1:
+ORA-00911: invalid character
+
+
+SQL> create table refund(sno number(5),account_no number(4),money_refunded number(5),booking_id number(10);date_of_refund varchar2(10));
+create table refund(sno number(5),account_no number(4),money_refunded number(5),booking_id number(10);date_of_refund varchar2(10))
+                                                                                                     *
+ERROR at line 1:
+ORA-00911: invalid character
+
+
+SQL> create table refund(sno number(5),account_no number(4),money_refunded number(5),booking_id number(10),date_of_refund varchar2(10));
+
+Table created.
+
+SQL> desc refund;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNO                                                NUMBER(5)
+ ACCOUNT_NO                                         NUMBER(4)
+ MONEY_REFUNDED                                     NUMBER(5)
+ BOOKING_ID                                         NUMBER(10)
+ DATE_OF_REFUND                                     VARCHAR2(10)
+
+SQL> insert into refund values('1','2000','400','100','21-04-2020');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from refund;
+
+       SNO ACCOUNT_NO MONEY_REFUNDED BOOKING_ID DATE_OF_RE
+---------- ---------- -------------- ---------- ----------
+         1       2000            400        100 21-04-2020
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table seats(sno number(1),seat_type varchar2(10),available_seats number(3),price number(4));
+
+Table created.
+
+SQL> insert into seats values('1','GOLD','45','300');
+
+1 row created.
+
+SQL> insert into seats values('2','SILVER','60','200');
+
+1 row created.
+
+SQL> insert into seats values('3','LOWER','80','100');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from seats;
+
+       SNO SEAT_TYPE  AVAILABLE_SEATS      PRICE
+---------- ---------- --------------- ----------
+         1 GOLD                    45        300
+         2 SILVER                  60        200
+         3 LOWER                   80        100
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table shows(sno number(1),timings varchar2(10),show varchar2(10));
+
+Table created.
+
+SQL> insert into shows values('1','8-11','morning');
+
+1 row created.
+
+SQL> insert into shows values('2','11-1','afternoon');
+
+1 row created.
+
+SQL> insert into shows values('3','3-6','evening');
+
+1 row created.
+
+SQL> insert into shows values('4','7-10','night');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from shows;
+
+       SNO TIMINGS    SHOW
+---------- ---------- ----------
+         1 8-11       morning
+         2 11-1       afternoon
+         3 3-6        evening
+         4 7-10       night
+
+SQL> create table theatre(theatre_id number(3),city_name varchar2(10),theatre_name varchar2(10));
+
+Table created.
+
+SQL> desc theatre;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ THEATRE_ID                                         NUMBER(3)
+ CITY_NAME                                          VARCHAR2(10)
+ THEATRE_NAME                                       VARCHAR2(10)
+
+SQL> select * from city;
+
+       SNO     CITYID CITYNAMES
+---------- ---------- ----------
+         1        100 Hyderabad
+         2        200 Kukatpally
+         3        300 Hitechcity
+
+SQL> select * from movies;
+
+  MOVIE_ID THEATRES   MOVIES
+---------- ---------- ----------
+       100 Imax       KGF
+       200 Asian      Bahubali
+       300 BVK        Robo 2.o
+
+SQL> insert into theatre values('100','Hyderabad','BVK');
+
+1 row created.
+
+SQL> insert into theatre values('200','Kukatpally','Asian');
+
+1 row created.
+
+SQL> insert into theatre values('300','Hitechcity','Imax');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from theatre;
+
+THEATRE_ID CITY_NAME  THEATRE_NA
+---------- ---------- ----------
+       100 Hyderabad  BVK
+       200 Kukatpally Asian
+       300 Hitechcity Imax
+
+SQL> commit;
+
+Commit complete.
+
+SQL> create table customer(account_no number(4),name varchar2(20),current_balance number(10),username varchar2(20),password varchar2(15));
+
+Table created.
+
+SQL> desc customer;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ACCOUNT_NO                                         NUMBER(4)
+ NAME                                               VARCHAR2(20)
+ CURRENT_BALANCE                                    NUMBER(10)
+ USERNAME                                           VARCHAR2(20)
+ PASSWORD                                           VARCHAR2(15)
+
+SQL> insert into customer values('1000','manasa reddy','5000','manasa','manasa123');
+
+1 row created.
+
+SQL> insert into customer values('2000','bhavana bhanu','4500','bhavana','bhavana123');
+
+1 row created.
+
+SQL> insert into customer values('3000','Ramani','3000','ramani','ramani123');
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from customer;
+
+ACCOUNT_NO NAME                 CURRENT_BALANCE USERNAME
+---------- -------------------- --------------- --------------------
+PASSWORD
+---------------
+      1000 manasa reddy                    5000 manasa
+manasa123
+
+      2000 bhavana bhanu                   4500 bhavana
+bhavana123
+
+      3000 Ramani                          3000 ramani
+ramani123
+
+
+SQL> commit;
+
+Commit complete.
+
+SQL>
+SQL> select * from seats;
+
+       SNO SEAT_TYPE  AVAILABLE_SEATS      PRICE
+---------- ---------- --------------- ----------
+         1 GOLD                    43        300
+         2 SILVER                  60        200
+         3 LOWER                   80        100
+
+SQL> select * from payments;
+
+BOOKING_ID ACCOUNT_NO MONEY_COLLECTED SEATS_BOOKED SEAT_T     REFUND DATE_OF_TR
+---------- ---------- --------------- ------------ ------ ---------- ----------
+       100       1000             600            3 GOLD            0 20-04-2020
+
+SQL> desc payments;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOKING_ID                                         NUMBER(5)
+ ACCOUNT_NO                                         NUMBER(4)
+ MONEY_COLLECTED                                    NUMBER(5)
+ SEATS_BOOKED                                       NUMBER(3)
+ SEAT_TYPE                                          VARCHAR2(6)
+ REFUND                                             NUMBER(5)
+ DATE_OF_TRANSAC                                    VARCHAR2(10)
+
+SQL> select * from payments;
+
+BOOKING_ID ACCOUNT_NO MONEY_COLLECTED SEATS_BOOKED SEAT_T     REFUND DATE_OF_TR
+---------- ---------- --------------- ------------ ------ ---------- ----------
+       100       1000             600            3 GOLD            0 20-04-2020
+         1       1000             900            3 GOLD            0 23-04-2020
+
+SQL> select * from payments;
+
+BOOKING_ID ACCOUNT_NO MONEY_COLLECTED SEATS_BOOKED SEAT_T     REFUND DATE_OF_TR
+---------- ---------- --------------- ------------ ------ ---------- ----------
+       100       1000             600            3 GOLD            0 20-04-2020
+         1       1000             900            3 GOLD          900 23-04-2020
+
+SQL> select * from refund;
+
+       SNO ACCOUNT_NO MONEY_REFUNDED BOOKING_ID DATE_OF_RE
+---------- ---------- -------------- ---------- ----------
+         1       2000            400        100 21-04-2020
+
+SQL> select * from refund;
+
+       SNO ACCOUNT_NO MONEY_REFUNDED BOOKING_ID DATE_OF_RE
+---------- ---------- -------------- ---------- ----------
+         1       2000            400        100 21-04-2020
+         2       1000            900          1 23-04-2020
+
+SQL> select * from seats;
+
+       SNO SEAT_TYPE  AVAILABLE_SEATS      PRICE
+---------- ---------- --------------- ----------
+         1 GOLD                    46        300
+         2 SILVER                  60        200
+         3 LOWER                   80        100
+
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+[32m :: Spring Boot :: [39m      [2m (v2.2.6.RELEASE)[0;39m
+
+[2m2020-04-24 12:18:49.474[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mc.c.Sprint2MovieTicketsApplication      [0;39m [2m:[0;39m Starting Sprint2MovieTicketsApplication on DESKTOP-9F0N1RT with PID 2248 (C:\Users\manasa reddy\Desktop\major project\sprint-2-movie-tickets\target\classes started by manasa reddy in C:\Users\manasa reddy\Desktop\major project\sprint-2-movie-tickets)
+[2m2020-04-24 12:18:49.480[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mc.c.Sprint2MovieTicketsApplication      [0;39m [2m:[0;39m No active profile set, falling back to default profiles: default
+[2m2020-04-24 12:18:53.761[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2m2020-04-24 12:18:54.320[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Finished Spring Data repository scanning in 502ms. Found 10 JPA repository interfaces.
+[2m2020-04-24 12:18:58.534[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat initialized with port(s): 5454 (http)
+[2m2020-04-24 12:18:58.658[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.apache.catalina.core.StandardService  [0;39m [2m:[0;39m Starting service [Tomcat]
+[2m2020-04-24 12:18:58.665[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36morg.apache.catalina.core.StandardEngine [0;39m [2m:[0;39m Starting Servlet engine: [Apache Tomcat/9.0.33]
+[2m2020-04-24 12:18:59.226[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.a.c.c.C.[Tomcat].[localhost].[/]      [0;39m [2m:[0;39m Initializing Spring embedded WebApplicationContext
+[2m2020-04-24 12:18:59.226[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.web.context.ContextLoader           [0;39m [2m:[0;39m Root WebApplicationContext: initialization completed in 9642 ms
+[2m2020-04-24 12:19:01.645[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.hibernate.jpa.internal.util.LogHelper [0;39m [2m:[0;39m HHH000204: Processing PersistenceUnitInfo [name: default]
+[2m2020-04-24 12:19:02.339[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36morg.hibernate.Version                   [0;39m [2m:[0;39m HHH000412: Hibernate ORM core version 5.4.12.Final
+[2m2020-04-24 12:19:03.087[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.hibernate.annotations.common.Version  [0;39m [2m:[0;39m HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+[2m2020-04-24 12:19:03.540[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Starting...
+[2m2020-04-24 12:19:03.557[0;39m [33m WARN[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mcom.zaxxer.hikari.util.DriverDataSource [0;39m [2m:[0;39m Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+[2m2020-04-24 12:19:05.158[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mcom.zaxxer.hikari.pool.PoolBase         [0;39m [2m:[0;39m HikariPool-1 - Driver does not support get/set network timeout for connections. (oracle.jdbc.driver.T4CConnection.getNetworkTimeout()I)
+[2m2020-04-24 12:19:05.171[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Start completed.
+[2m2020-04-24 12:19:05.357[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36morg.hibernate.dialect.Dialect           [0;39m [2m:[0;39m HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect
+Hibernate: create sequence hibernate_sequence start with 1 increment by  1
+[2m2020-04-24 12:19:14.233[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.h.e.t.j.p.i.JtaPlatformInitiator      [0;39m [2m:[0;39m HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2m2020-04-24 12:19:14.267[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mj.LocalContainerEntityManagerFactoryBean[0;39m [2m:[0;39m Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2m2020-04-24 12:19:17.008[0;39m [33m WARN[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mJpaBaseConfiguration$JpaWebConfiguration[0;39m [2m:[0;39m spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2m2020-04-24 12:19:17.543[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.s.concurrent.ThreadPoolTaskExecutor [0;39m [2m:[0;39m Initializing ExecutorService 'applicationTaskExecutor'
+[2m2020-04-24 12:19:18.683[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat started on port(s): 5454 (http) with context path ''
+[2m2020-04-24 12:19:18.695[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[           main][0;39m [36mc.c.Sprint2MovieTicketsApplication      [0;39m [2m:[0;39m Started Sprint2MovieTicketsApplication in 30.023 seconds (JVM running for 32.943)
+[2m2020-04-24 12:21:34.627[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[nio-5454-exec-2][0;39m [36mo.a.c.c.C.[Tomcat].[localhost].[/]      [0;39m [2m:[0;39m Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2m2020-04-24 12:21:34.627[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[nio-5454-exec-2][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Initializing Servlet 'dispatcherServlet'
+[2m2020-04-24 12:21:34.661[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[nio-5454-exec-2][0;39m [36mo.s.web.servlet.DispatcherServlet       [0;39m [2m:[0;39m Completed initialization in 34 ms
+Hibernate: select account0_.username as username1_0_, account0_.password as password2_0_, account0_.sno as sno3_0_ from account account0_ where account0_.username=? and account0_.password=?
+Hibernate: select city0_.sno as sno1_1_, city0_.cityid as cityid2_1_, city0_.citynames as citynames3_1_ from city city0_
+Hibernate: select theatre0_.theatre_id as theatre_id1_10_, theatre0_.city_name as city_name2_10_, theatre0_.theatre_name as theatre_name3_10_ from theatre theatre0_ where theatre0_.city_name=?
+Hibernate: select movies0_.movie_id as movie_id1_5_, movies0_.movies as movies2_5_, movies0_.theatres as theatres3_5_ from movies movies0_ where movies0_.theatres=?
+Hibernate: select shows0_.sno as sno1_9_, shows0_.show as show2_9_, shows0_.timings as timings3_9_ from shows shows0_
+Hibernate: select languages0_.sno as sno1_4_, languages0_.language as language2_4_ from languages languages0_
+Hibernate: select seats0_.sno as sno1_8_, seats0_.available_seats as available_seats2_8_, seats0_.price as price3_8_, seats0_.seat_type as seat_type4_8_ from seats seats0_
+Hibernate: select customer0_.account_no as account_no1_2_, customer0_.current_balance as current_balance2_2_, customer0_.name as name3_2_, customer0_.password as password4_2_, customer0_.username as username5_2_ from customer customer0_ where customer0_.account_no=?
+[2m2020-04-24 12:27:56.925[0;39m [33m WARN[0;39m [35m2248[0;39m [2m---[0;39m [2m[nio-5454-exec-1][0;39m [36m.w.s.m.s.DefaultHandlerExceptionResolver[0;39m [2m:[0;39m Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'PUT' not supported]
+Hibernate: select seats0_.sno as sno1_8_, seats0_.available_seats as available_seats2_8_, seats0_.price as price3_8_, seats0_.seat_type as seat_type4_8_ from seats seats0_
+Hibernate: select count(*) as col_0_0_ from seats seats0_ where seats0_.sno=?
+Hibernate: select seats0_.sno as sno1_8_0_, seats0_.available_seats as available_seats2_8_0_, seats0_.price as price3_8_0_, seats0_.seat_type as seat_type4_8_0_ from seats seats0_ where seats0_.sno=?
+Hibernate: update seats set available_seats=?, price=?, seat_type=? where sno=?
+Hibernate: select payments0_.booking_id as booking_id1_6_0_, payments0_.account_no as account_no2_6_0_, payments0_.date_of_transac as date_of_transac3_6_0_, payments0_.money_collected as money_collected4_6_0_, payments0_.refund as refund5_6_0_, payments0_.seat_type as seat_type6_6_0_, payments0_.seats_booked as seats_booked7_6_0_ from payments payments0_ where payments0_.booking_id=?
+Hibernate: select hibernate_sequence.nextval from dual
+Hibernate: insert into payments (account_no, date_of_transac, money_collected, refund, seat_type, seats_booked, booking_id) values (?, ?, ?, ?, ?, ?, ?)
+Hibernate: select payments0_.booking_id as booking_id1_6_, payments0_.account_no as account_no2_6_, payments0_.date_of_transac as date_of_transac3_6_, payments0_.money_collected as money_collected4_6_, payments0_.refund as refund5_6_, payments0_.seat_type as seat_type6_6_, payments0_.seats_booked as seats_booked7_6_ from payments payments0_ where payments0_.account_no=? and payments0_.booking_id=?
+Hibernate: select count(*) as col_0_0_ from payments payments0_ where payments0_.booking_id=?
+Hibernate: select payments0_.booking_id as booking_id1_6_0_, payments0_.account_no as account_no2_6_0_, payments0_.date_of_transac as date_of_transac3_6_0_, payments0_.money_collected as money_collected4_6_0_, payments0_.refund as refund5_6_0_, payments0_.seat_type as seat_type6_6_0_, payments0_.seats_booked as seats_booked7_6_0_ from payments payments0_ where payments0_.booking_id=?
+Hibernate: update payments set account_no=?, date_of_transac=?, money_collected=?, refund=?, seat_type=?, seats_booked=? where booking_id=?
+Hibernate: select refund0_.sno as sno1_7_0_, refund0_.account_no as account_no2_7_0_, refund0_.booking_id as booking_id3_7_0_, refund0_.date_of_refund as date_of_refund4_7_0_, refund0_.money_refunded as money_refunded5_7_0_ from refund refund0_ where refund0_.sno=?
+Hibernate: select hibernate_sequence.nextval from dual
+Hibernate: insert into refund (account_no, booking_id, date_of_refund, money_refunded, sno) values (?, ?, ?, ?, ?)
+Hibernate: select seats0_.sno as sno1_8_, seats0_.available_seats as available_seats2_8_, seats0_.price as price3_8_, seats0_.seat_type as seat_type4_8_ from seats seats0_ where seats0_.seat_type=?
+[2m2020-04-24 12:44:33.994[0;39m [33m WARN[0;39m [35m2248[0;39m [2m---[0;39m [2m[nio-5454-exec-1][0;39m [36m.w.s.m.s.DefaultHandlerExceptionResolver[0;39m [2m:[0;39m Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+Hibernate: select count(*) as col_0_0_ from seats seats0_ where seats0_.sno=?
+Hibernate: select seats0_.sno as sno1_8_0_, seats0_.available_seats as available_seats2_8_0_, seats0_.price as price3_8_0_, seats0_.seat_type as seat_type4_8_0_ from seats seats0_ where seats0_.sno=?
+Hibernate: update seats set available_seats=?, price=?, seat_type=? where sno=?
+[2m2020-04-24 12:46:14.896[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[)-192.168.0.111][0;39m [36minMXBeanRegistrar$SpringApplicationAdmin[0;39m [2m:[0;39m Application shutdown requested.
+[2m2020-04-24 12:46:14.903[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[)-192.168.0.111][0;39m [36mo.s.s.concurrent.ThreadPoolTaskExecutor [0;39m [2m:[0;39m Shutting down ExecutorService 'applicationTaskExecutor'
+[2m2020-04-24 12:46:14.918[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[)-192.168.0.111][0;39m [36mj.LocalContainerEntityManagerFactoryBean[0;39m [2m:[0;39m Closing JPA EntityManagerFactory for persistence unit 'default'
+[2m2020-04-24 12:46:14.929[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[)-192.168.0.111][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown initiated...
+[2m2020-04-24 12:46:15.016[0;39m [32m INFO[0;39m [35m2248[0;39m [2m---[0;39m [2m[)-192.168.0.111][0;39m [36mcom.zaxxer.hikari.HikariDataSource      [0;39m [2m:[0;39m HikariPool-1 - Shutdown completed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
