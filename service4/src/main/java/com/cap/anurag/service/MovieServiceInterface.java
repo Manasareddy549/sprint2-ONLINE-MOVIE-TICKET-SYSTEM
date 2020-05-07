@@ -1,5 +1,7 @@
 package com.cap.anurag.service;
 
+import java.util.List;
+
 import com.cap.anurag.entity.Payments;
 import com.cap.anurag.entity.Refund;
 import com.cap.anurag.entity.Seats;
@@ -11,5 +13,6 @@ public interface MovieServiceInterface {
 	String refundDetails(Refund ref);
 	Seats seatDetails(String s_type);
 	String setSeats(Seats seat);
+	List<Refund> getRefundList();
 	
 }

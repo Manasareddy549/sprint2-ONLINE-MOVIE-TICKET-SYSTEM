@@ -30,5 +30,8 @@ public interface MovieServiceInterface {
 	String refundDetails(Refund ref);
 	Seats seatDetails(String s_type);
 	String setSeats(Seats seat);
+	List<Refund> getRefundList();
+	String updateCustomer(Customer cus);
+	
 	
 }

@@ -158,4 +158,23 @@ public class MovieService implements MovieServiceInterface  {
 			return "Sorry!!seats were not updated.";
 		}
 	}
+//list refund details
+	@Override
+	public List<Refund> getRefundList() {
+		List<Refund> list=refund.findAll();
+		return list;
+	}
+
+	@Override
+	public String updateCustomer(Customer cus) {
+		boolean bool = account.existsById(cus.getAccount_no());
+		if(bool){
+			account.save(cus);
+			return "the customer table was updated successfully..!!";
+		}
+		else{
+			return "sorry, customer table was not updated..!!";
+		}
+	}
+	
 }

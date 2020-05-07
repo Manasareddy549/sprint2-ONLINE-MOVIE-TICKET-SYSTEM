@@ -1,5 +1,7 @@
 package com.cap.anurag.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,4 +65,11 @@ public class MovieService implements MovieServiceInterface  {
 			return "Sorry!!seats were not updated.";
 		}
 	}
+	//list refund details
+		@Override
+		public List<Refund> getRefundList() {
+			List<Refund> list=refund.findAll();
+			return list;
+		}
+
 }

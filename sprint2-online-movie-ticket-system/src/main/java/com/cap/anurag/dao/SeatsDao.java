@@ -9,4 +9,9 @@ public interface SeatsDao extends JpaRepository<Seats, Integer>{
 
 	@Query("select s from Seats s where seat_type=?1")
 	public Seats seatDetails(String s_type);
+	
+@Query("select p from Seats p where sno=?1 ")
+	public String setSeats(Seats seat);
+
+
 }

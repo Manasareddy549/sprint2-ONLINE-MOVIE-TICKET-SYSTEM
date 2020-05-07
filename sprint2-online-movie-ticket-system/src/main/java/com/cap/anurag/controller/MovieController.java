@@ -1,5 +1,6 @@
 package com.cap.anurag.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class MovieController {
 		
 	@Autowired
 	private MovieServiceInterface movieservice;
+	
 	//Login Details
 	@GetMapping("/validation/{username}/{password}")
 	public ResponseEntity<Account> validate(@PathVariable("username") String uname, @PathVariable("password") String pwd) throws AccountNotFoundException{
@@ -120,15 +122,38 @@ public class MovieController {
 		String string = movieservice.refundDetails(refund);
 		return string;
 	}
+	
+	//list refund details
+	@GetMapping("/listrefund")
+	public	List<Refund> getRefundList(){
+	List<Refund> list= movieservice.getRefundList();
+	return list;
+	}
+	
+	
+	
 	//seats information
 	@GetMapping("/seat_details/{seat_type}")
-	public Seats seatDetails(@PathVariable("seat_type") String seattype) {
+	public Seats seatDetails(@PathVariable("seat_type") String seattype ) {
 		return movieservice.seatDetails(seattype);
 	}
 	//updating seats
 	@PutMapping("/set_seats")
-	public String setSeats(@RequestBody Seats seat) {
+	public String setSeats(@RequestBody Seats seat ) {
 		String string = movieservice.setSeats(seat);
-		return string;
+		if(string!=null)
+		{
+			return "updated successfully!!"+"Sno:"+" "+seat.getSno()+" "+"seat_type:"+" "+seat.getSeat_type()+" "+"seats available:"+" "+seat.getAvailable_seats()+" "+"price:"+" "+seat.getPrice();
+		}
+		else
+		{
+			return "seats not updated";
+		}
+	}
+	
+	@PutMapping("/update_customer")
+	public ResponseEntity<String> updateCustomer(@RequestBody Customer cus){
+		String string = movieservice.updateCustomer(cus);
+		return new ResponseEntity<>(string,HttpStatus.OK);
 	}
 }

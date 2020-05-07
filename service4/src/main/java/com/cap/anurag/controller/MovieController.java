@@ -1,5 +1,7 @@
 package com.cap.anurag.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +40,29 @@ public class MovieController {
 		String string = movieservice.refundDetails(refund);
 		return string;
 	}
+	//list refund details
+		@GetMapping("/listrefund")
+		public	List<Refund> getRefundList(){
+		List<Refund> list= movieservice.getRefundList();
+		return list;
+		}
+		
 	//seats information
 	@GetMapping("/seat_details/{seat_type}")
 	public Seats seatDetails(@PathVariable("seat_type") String seattype) {
 		return movieservice.seatDetails(seattype);
 	}
 	//updating seats
-	@PutMapping("/set_seats")
-	public String setSeats(@RequestBody Seats seat) {
-		String string = movieservice.setSeats(seat);
-		return string;
-	}
+		@PutMapping("/set_seats")
+		public String setSeats(@RequestBody Seats seat ) {
+			String string = movieservice.setSeats(seat);
+			if(string!=null)
+			{
+				return "updated successfully!"+"Sno"+seat.getSno()+"seattype"+seat.getSeat_type()+"seats available"+seat.getAvailable_seats()+"price"+seat.getPrice();
+			}
+			else
+			{
+				return "seats not updated";
+			}
+		}
 }
